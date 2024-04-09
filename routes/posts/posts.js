@@ -1,19 +1,27 @@
-const express=require('express')
-const { createPostCtrl, fetchPostsCtrl, fetchSinglePostCtrl, deletePostCtrl, updatePostCtrl } = require('../../controllers/posts/posts')
-const postRoutes=express.Router()
+const express = require("express");
+const {
+  createPostCtrl,
+  deletePostCtrl,
+  fetchPostCtrl,
+  fetchPostsCtrl,
+  updatepostCtrl,
+} = require("../../controllers/posts/posts");
 
-postRoutes.post('/',createPostCtrl)
+const postRoutes = express.Router();
 
-//fetch all
-postRoutes.get('/',fetchPostsCtrl)
+//POST/api/v1/posts
+postRoutes.post("/", createPostCtrl);
 
-//single post
-postRoutes.get('/:id',fetchSinglePostCtrl)
+//GET/api/v1/posts
+postRoutes.get("/", fetchPostsCtrl);
 
-//delete post
-postRoutes.delete('/:id',deletePostCtrl)
+//GET/api/v1/posts/:id
+postRoutes.get("/:id", fetchPostCtrl);
 
-//updated post
-postRoutes.put('/:id',updatePostCtrl)
+//DELETE/api/v1/posts/:id
+postRoutes.delete("/:id", deletePostCtrl);
 
-module.exports=postRoutes
+//PUT/api/v1/posts/:id
+postRoutes.put("/:id", updatepostCtrl);
+
+module.exports = postRoutes;

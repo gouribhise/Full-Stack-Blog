@@ -1,34 +1,43 @@
-const express=require('express')
-const userRoutes=express.Router()
- const {registerCtrl, loginCtrl, singleUserCtrl, userDetailsCtrl, profileCtrl, uploadProfilePhotoCtrl, uploadCoverImageCtrl, updatePasswordCtrl, updateUserCtrl, logoutCtrl}=require('../../controllers/users/users')
+const express = require("express");
+const {
+  registerCtrl,
+  loginCtrl,
+  userDetailsCtrl,
+  profileCtrl,
+  uploadProfilePhotoCtrl,
+  uploadCoverImgCtrl,
+  updatePasswordCtrl,
+  updateUserCtrl,
+  logoutCtrl,
+} = require("../../controllers/users/users");
 
-//register 
-userRoutes.post('/register',registerCtrl)
+const userRoutes = express.Router();
 
-//login
-userRoutes.post('/login',loginCtrl)
+//POST/api/v1/users/register
+userRoutes.post("/register", registerCtrl);
 
-//single user
-userRoutes.get('/:id',userDetailsCtrl)
+//POST/api/v1/users/login
+userRoutes.post("/login", loginCtrl);
 
-//user profile
-userRoutes.get('/profile/:id',profileCtrl)
+//GET/api/v1/users/:id
+userRoutes.get("/:id", userDetailsCtrl);
 
-//update profile photo
-userRoutes.put('/profile-photo-upload/:id',uploadProfilePhotoCtrl)
+//GET/api/v1/users/profile/:id
+userRoutes.get("/profile/:id", profileCtrl);
 
-//cover photo
-userRoutes.put('/cover-photo-upload/:id',uploadCoverImageCtrl)
+//PUT/api/v1/users/profile-photo-upload/:id
+userRoutes.put("/profile-photo-upload/:id", uploadProfilePhotoCtrl);
 
-//update user password
-userRoutes.put('/update-password/:id',updatePasswordCtrl)
+//PUT/api/v1/users/cover-photo-upload/:id
+userRoutes.put("/cover-photo-upload/:id", uploadCoverImgCtrl);
 
-//update user
-userRoutes.put('/update/:id',updateUserCtrl)
+//PUT/api/v1/users/update-password/:id
+userRoutes.put("/update-password/:id", updatePasswordCtrl);
 
-//logout user
-userRoutes.get('/logout',logoutCtrl)
+//PUT/api/v1/users/update/:id
+userRoutes.put("/update/:id", updateUserCtrl);
 
+//GET/api/v1/users/logout
+userRoutes.get("/logout", logoutCtrl);
 
-
-module.exports=userRoutes
+module.exports = userRoutes;

@@ -1,60 +1,67 @@
-const createPostCtrl=async(req,res)=>{
-    try{
-res.json(
-    {status:'success',user:'Post Created'}
-)
-    }catch(error){
-res.json(error)
+//create
+const createPostCtrl = async (req, res) => {
+    try {
+      res.json({
+        status: "success",
+        user: "Post created",
+      });
+    } catch (error) {
+      res.json(error);
     }
-}
-
-//fetch all posts
-const fetchPostsCtrl=async(req,res)=>{
-    try{
-res.json(
-    {status:'success',user:'Posts List'}
-)
-    }catch(error){
-res.json(error)
+  };
+  
+  //all
+  const fetchPostsCtrl = async (req, res) => {
+    try {
+      res.json({
+        status: "success",
+        user: "Posts list",
+      });
+    } catch (error) {
+      res.json(error);
     }
-}
-
-//single post
-const fetchSinglePostCtrl=async(req,res)=>{
-    try{
-res.json(
-    {status:'success',user:'Post Details'}
-)
-    }catch(error){
-res.json(error)
+  };
+  
+  //details
+  const fetchPostCtrl = async (req, res) => {
+    try {
+      res.json({
+        status: "success",
+        user: "Post details",
+      });
+    } catch (error) {
+      res.json(error);
     }
-}
-
-//delete post
-const deletePostCtrl=async(req,res)=>{
-    try{
-res.json(
-    {status:'success',user:'Post Deleted'}
-)
-    }catch(error){
-res.json(error)
+  };
+  
+  //delete
+  const deletePostCtrl = async (req, res) => {
+    try {
+      res.json({
+        status: "success",
+        user: "Post deleted",
+      });
+    } catch (error) {
+      res.json(error);
     }
-}
-
-//update post
-const updatePostCtrl=async(req,res)=>{
-    try{
-res.json(
-    {status:'success',user:'Post Updated'}
-)
-    }catch(error){
-res.json(error)
+  };
+  
+  //update
+  const updatepostCtrl = async (req, res) => {
+    try {
+      res.json({
+        status: "success",
+        user: "Post updated",
+      });
+    } catch (error) {
+      res.json(error);
     }
-}
-module.exports={
+  };
+  module.exports = {
     createPostCtrl,
     fetchPostsCtrl,
-    fetchSinglePostCtrl,
+    fetchPostCtrl,
     deletePostCtrl,
-    updatePostCtrl
-}
+    updatepostCtrl,
+  };
+  

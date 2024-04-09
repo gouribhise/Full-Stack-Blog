@@ -1,48 +1,55 @@
-const createCommentCtrl=async(req,res)=>{
-    try{
-res.json(
-    {status:'success',user:'Comment Created'}
-)
-    }catch(error){
-res.json(error)
+//create
+const createCommentCtrl = async (req, res) => {
+    try {
+      res.json({
+        status: "success",
+        user: "comment created",
+      });
+    } catch (error) {
+      res.json(error);
     }
-}
-
-//single comment
-const commentDetailsCtrl=async(req,res)=>{
-    try{
-res.json(
-    {status:'success',user:'Comments Details'}
-)
-    }catch(error){
-res.json(error)
+  };
+  
+  //single
+  const commentDetailsCtrl = async (req, res) => {
+    try {
+      res.json({
+        status: "success",
+        user: "Post comments",
+      });
+    } catch (error) {
+      res.json(error);
     }
-}
-
-//delete comment
-const deleteCommentCtrl=async(req,res)=>{
-    try{
-res.json(
-    {status:'success',user:'Comment Deleted'}
-)
-    }catch(error){
-res.json(error)
+  };
+  
+  //delete
+  const deleteCommentCtrl = async (req, res) => {
+    try {
+      res.json({
+        status: "success",
+        user: "comment deleted",
+      });
+    } catch (error) {
+      res.json(error);
     }
-}
-
-const updateCommentCtrl=async(req,res)=>{
-    try{
-res.json(
-    {status:'success',user:'Comment Updated'}
-)
-    }catch(error){
-res.json(error)
+  };
+  
+  //Update
+  const upddateCommentCtrl = async (req, res) => {
+    try {
+      res.json({
+        status: "success",
+        user: "comment updated",
+      });
+    } catch (error) {
+      res.json(error);
     }
-}
-
-module.exports={
+  };
+  
+  module.exports = {
     createCommentCtrl,
     commentDetailsCtrl,
     deleteCommentCtrl,
-    updateCommentCtrl
-}
+    upddateCommentCtrl,
+  };
+  
