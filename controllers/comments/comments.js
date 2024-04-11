@@ -1,7 +1,6 @@
-const Comment=require('../../models/comment/Comment')
-const Post=require("../../models/post/Post")
- 
-const User = require("../../models/user/User");
+const Comment = require("../../model/comment/Comment");
+const Post = require("../../model/post/Post");
+const User = require("../../model/user/User");
 const appErr = require("../../utils/appErr");
 //create
 const createCommentCtrl = async (req, res, next) => {

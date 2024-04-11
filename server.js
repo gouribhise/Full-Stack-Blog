@@ -15,6 +15,12 @@ const app = express();
 //-------
 app.use(express.json())
 
+//pass form data
+app.use(express.urlencoded({extended:true}))
+//configure ejs
+app.set('view engine',"ejs")
+//serve static files
+app.use(express.static(__dirname,+"public/"))
 //session configuration
 app.use(session({
     secret:process.env.SESSION_KEY,
@@ -26,6 +32,18 @@ app.use(session({
     })
 }))
 
+app.use((req,res,next)=>{
+if(req.session.userAuth){
+    res.locals.userAuth=req.session.userAuth
+}else{
+    res.locals.userAuth=null
+}
+next()
+})
+//render home page
+app.get('/',(req,res)=>{
+    res.render('index.ejs')
+})
 //users route
 app.use("/api/v1/users", userRoutes);
 

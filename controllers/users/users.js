@@ -1,20 +1,24 @@
 const bcrypt = require("bcryptjs");
-const User = require('../../models/user/User')
+const User = require("../../model/user/User");
 const appErr = require("../../utils/appErr");
 
 //register
 const registerCtrl = async (req, res, next) => {
+  console.log(req.body)
   const { fullname, email, password } = req.body;
   //check if field is empty
   if (!fullname || !email || !password) {
-    return next(appErr("All fields are required"));
+    // return next(appErr("All fields are required"));
+    return res.render('users/register',{error:'All fields are required'})
   }
   try {
     //1. check if user exist (email)
     const userFound = await User.findOne({ email });
     //throw an error
     if (userFound) {
-      return next(appErr("User already Exists"));
+      return res.render("users/register", {
+        error: "Exist is taken",
+      });
     }
     //Hash passsword
     const salt = await bcrypt.genSalt(10);
@@ -24,11 +28,9 @@ const registerCtrl = async (req, res, next) => {
       fullname,
       email,
       password: passswordHashed,
-    });
-    res.json({
-      status: "success",
-      data: user,
-    });
+    }); 
+    //redirect
+    res.redirect("/api/v1/users/profile-page");
   } catch (error) {
     res.json(error);
   }
@@ -45,21 +47,22 @@ const loginCtrl = async (req, res, next) => {
     const userFound = await User.findOne({ email });
     if (!userFound) {
       //throw an error
-      return next(appErr("Invalid login credentials"));
+      return res.render("users/login", {
+        error: "Invalid login credentials",
+      });
     }
     //verify password
     const isPasswordValid = await bcrypt.compare(password, userFound.password);
     if (!isPasswordValid) {
       //throw an error
-      return next(appErr("Invalid login credentials"));
+      return res.render("users/login", {
+        error: "Invalid login credentials",
+      });
     }
     //save the user into
     req.session.userAuth = userFound._id;
-    console.log(req.session);
-    res.json({
-      status: "success",
-      data: userFound,
-    });
+    //redirect
+    res.redirect("/api/v1/users/profile-page");
   } catch (error) {
     res.json(error);
   }
@@ -86,7 +89,9 @@ const profileCtrl = async (req, res) => {
     //get the login user
     const userID = req.session.userAuth;
     //find the user
-    const user = await User.findById(userID).populate('posts').populate("comments");
+    const user = await User.findById(userID)
+      .populate("posts")
+      .populate("comments");
     res.json({
       status: "success",
       data: user,
@@ -129,7 +134,6 @@ const uploadProfilePhotoCtrl = async (req, res, next) => {
 //upload cover image
 
 const uploadCoverImgCtrl = async (req, res) => {
-  console.log(req.file.path);
   try {
     //1. Find the user to be updated
     const userId = req.session.userAuth;

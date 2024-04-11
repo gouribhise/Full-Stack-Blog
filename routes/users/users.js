@@ -18,8 +18,43 @@ const userRoutes = express.Router();
 //instance of multer
 const upload = multer({ storage });
 
+//-----
+//Rendering forms
+//-----
+
+//login form
+userRoutes.get("/login", (req, res) => {
+  res.render("users/login", { error: "" });
+});
+//register form
+userRoutes.get("/register", (req, res) => {
+  res.render("users/register", {
+    error: "",
+  });
+});
+
+//profile template
+userRoutes.get("/profile-page", (req, res) => {
+  res.render("users/profile");
+});
+
+//upload profile photo
+userRoutes.get("/upload-profile-photo-form", (req, res) => {
+  res.render("users/uploadProfilePhoto");
+});
+
+//upload cover photo
+userRoutes.get("/upload-cover-photo-form", (req, res) => {
+  res.render("users/uploadCoverPhoto");
+});
+
+//update user form
+userRoutes.get("/update-user-form", (req, res) => {
+  res.render("users/updateUser");
+});
+
 //POST/api/v1/users/register
-userRoutes.post("/register", registerCtrl);
+userRoutes.post("/register", upload.single("profile"), registerCtrl);
 
 //POST/api/v1/users/login
 userRoutes.post("/login", loginCtrl);
@@ -36,10 +71,12 @@ userRoutes.put(
 );
 
 //PUT/api/v1/users/cover-photo-upload/:id
-userRoutes.put("/cover-photo-upload/",
-protected,
-upload.single("profile"),
-uploadCoverImgCtrl);
+userRoutes.put(
+  "/cover-photo-upload/",
+  protected,
+  upload.single("profile"),
+  uploadCoverImgCtrl
+);
 
 //PUT/api/v1/users/update-password/:id
 userRoutes.put("/update-password/:id", updatePasswordCtrl);
