@@ -12,30 +12,36 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/public/css/uploadPhoto.css" />
     <link rel="stylesheet" href="/public/css/style.css"/>
-    <title>Upload Profile Photo</title>
+    <title>Upload Cover Photo</title>
   </head>
   <body>
-    <%-include('../partials/navbar.ejs')%>
-
+    <!-- navbar -->
+    <%-include('../partials/navbar.ejs') %>
     <div class="form-container">
       <!-- icon -->
       <h1>Upload Cover photo</h1>
       <p>
         <!-- upload icon -->
       </p>
+      <%if(error){%>
       <small class="error">
         <i class="fas fa-exclamation-circle"></i>
-        Invalid Credentials
+        <%=error%>
       </small>
-      <form action="/login" method="POST">
+      <%}%>
+      <form
+        action="/api/v1/users/cover-photo-upload?_method=put"
+        method="POST"
+        enctype="multipart/form-data"
+      >
         <label for="email">Select Imgae</label>
-        <input type="file" name="image" id="image" />
+        <input type="file" name="profile" id="image" />
         <button type="submit">
           <i class="fas fa-upload"></i>
         </button>
       </form>
     </div>
-    <%-include('../partials/footer.ejs')%>
-
+    <!-- footer -->
+    <%-include('../partials/footer.ejs') %>
   </body>
 </html>

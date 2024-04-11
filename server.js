@@ -4,6 +4,7 @@ const session=require('express-session')
 const MongoStore=require('connect-mongo')
 const commentRoutes = require("./routes/comments/comment");
 const postRoutes = require("./routes/posts/posts");
+const methodOverride=require("method-override")
 const userRoutes = require("./routes/users/users");
 const globalHandler = require("./middlewares/globalHandler");
 
@@ -14,6 +15,7 @@ const app = express();
 //middlewares
 //-------
 app.use(express.json())
+app.use(methodOverride('_method'))
 
 //pass form data
 app.use(express.urlencoded({extended:true}))
