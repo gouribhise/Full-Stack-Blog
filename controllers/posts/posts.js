@@ -3,15 +3,10 @@ const User = require("../../model/user/User");
 const appErr = require("../../utils/appErr");
 //create
 const createPostCtrl = async (req, res, next) => {
-  console.log(req.file);
-  console.log(req.body);
   const { title, description, category, user } = req.body;
   try {
     if (!title || !description || !category || !req.file) {
-     
-      return res.render('posts/addPost',{
-        error:"All fields are required"
-      })
+      return res.render("posts/addPost", { error: "All fields are required" });
     }
     //Find the user
     const userId = req.session.userAuth;
@@ -29,11 +24,9 @@ const createPostCtrl = async (req, res, next) => {
     //re save
     await userFound.save();
     //redirect
-    res.redirect('/')
+    res.redirect("/");
   } catch (error) {
-    return res.render('posts/addPost',{
-      error: error.message
-    })
+    return res.render("posts/addPost", { error: error.message });
   }
 };
 
@@ -45,6 +38,7 @@ const fetchPostsCtrl = async (req, res, next) => {
       status: "success",
       data: posts,
     });
+    console.log(posts);
   } catch (error) {
     next(appErr(error.message));
   }
@@ -56,11 +50,18 @@ const fetchPostCtrl = async (req, res, next) => {
     //get the id from params
     const id = req.params.id;
     //find the post
-    const post = await Post.findById(id).populate("comments");
-    res.render('posts/postDetails',{
+    const post = await Post.findById(id)
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+        },
+      })
+      .populate("user");
+    res.render("posts/postDetails", {
       post,
-      error:""
-    })
+      error: "",
+    });
   } catch (error) {
     next(appErr(error.message));
   }
@@ -73,20 +74,20 @@ const deletePostCtrl = async (req, res, next) => {
     const post = await Post.findById(req.params.id);
     //check if the post belongs to the user
     if (post.user.toString() !== req.session.userAuth.toString()) {
-      return  res.render('posts/postDetails',{
-        error:"YOu are not authorized to delete this post",
-        post
-      })
+      return res.render("posts/postDetails", {
+        error: "You are not authorized to delete this post",
+        post,
+      });
     }
     //delete post
     await Post.findByIdAndDelete(req.params.id);
-   //redirect
-   res.redirect('/')
+    //redirect
+    res.redirect("/");
   } catch (error) {
-    return  res.render('posts/postDetails',{
+    return res.render("posts/postDetails", {
       error: error.message,
-      post:''
-    })
+      post: "",
+    });
   }
 };
 
@@ -98,14 +99,14 @@ const updatepostCtrl = async (req, res, next) => {
     const post = await Post.findById(req.params.id);
     //check if the post belongs to the user
     if (post.user.toString() !== req.session.userAuth.toString()) {
- return res.render('posts/updatePost',{
-  post:'',
-  error:'you are not authorized to update this post'
- })
+      return res.render("posts/updatePost", {
+        post: "",
+        error: "You are not authorized to update this post",
+      });
     }
-
-    if(req.file){
- await Post.findByIdAndUpdate(
+    //check if user is updating image
+    if (req.file) {
+      await Post.findByIdAndUpdate(
         req.params.id,
         {
           title,
@@ -117,31 +118,28 @@ const updatepostCtrl = async (req, res, next) => {
           new: true,
         }
       );
-  
-    }else{
- await Post.findByIdAndUpdate(
+    } else {
+      //update
+      await Post.findByIdAndUpdate(
         req.params.id,
         {
           title,
           description,
           category,
-          
         },
         {
           new: true,
         }
       );
-  
     }
-    //update
-   
+
     //redirect
-    res.redirect('/')
+    res.redirect("/");
   } catch (error) {
-    return res.render('posts/updatePost',{
-      post:'',
-      error:error.message,
-     })
+    return res.render("posts/updatePost", {
+      post: "",
+      error: error.message,
+    });
   }
 };
 module.exports = {

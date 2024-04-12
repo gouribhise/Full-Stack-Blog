@@ -1,60 +1,66 @@
 require("dotenv").config();
 const express = require("express");
-const session=require('express-session')
-const MongoStore=require('connect-mongo')
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const methodOverride = require("method-override");
+const globalErrHandler = require("./middlewares/globalHandler");
 const commentRoutes = require("./routes/comments/comment");
 const postRoutes = require("./routes/posts/posts");
-const methodOverride=require("method-override")
 const userRoutes = require("./routes/users/users");
-const globalHandler = require("./middlewares/globalHandler");
 const Post = require("./model/post/Post");
-const {truncatePost}=require("./utils/helpers")
+const { truncatePost } = require("./utils/helpers");
+
 require("./config/dbConnect");
 
 const app = express();
 
-app.locals.truncatePost=truncatePost
+//helpers
+app.locals.tuncatePost = truncatePost;
+
 //middlewares
-//-------
-app.use(express.json())
-app.use(methodOverride('_method'))
-
-//pass form data
-app.use(express.urlencoded({extended:true}))
 //configure ejs
-app.set('view engine',"ejs")
+app.set("view engine", "ejs");
 //serve static files
-app.use(express.static(__dirname,+"public/"))
-//session configuration
-app.use(session({
-    secret:process.env.SESSION_KEY,
-    resave:false,
-    saveUninitialized:true,
-    store:new MongoStore({
-        mongoUrl:process.env.MONGO_URI,
-        ttl:24*60*60
-    })
-}))
+app.use(express.static(__dirname + "/public"));
 
-app.use((req,res,next)=>{
-if(req.session.userAuth){
-    res.locals.userAuth=req.session.userAuth
-}else{
-    res.locals.userAuth=null
-}
-next()
-})
-//render home page
-app.get('/',async(req,res)=>{
+app.use(express.json()); //pass incoming data
+app.use(express.urlencoded({ extended: true })); //pass form data
 
-    try{
-        const posts=await Post.find().populate('user')
-        res.render('index',{posts})
-    }catch(error){
-res.render('index',{error:error.message})
-    }
-   
-})
+//method override
+app.use(methodOverride("_method"));
+//session config
+app.use(
+  session({
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: true,
+    store: new MongoStore({
+      mongoUrl: process.env.MONGO_URI,
+      ttl: 24 * 60 * 60, //1 day
+    }),
+  })
+);
+
+//save the login user into locals
+app.use((req, res, next) => {
+  if (req.session.userAuth) {
+    res.locals.userAuth = req.session.userAuth;
+  } else {
+    res.locals.userAuth = null;
+  }
+  next();
+});
+
+//render home
+app.get("/", async (req, res) => {
+  try {
+    const posts = await Post.find().populate("user");
+    res.render("index", { posts });
+  } catch (error) {
+    res.render("index", { error: error.message });
+  }
+});
+
 //users route
 app.use("/api/v1/users", userRoutes);
 
@@ -65,7 +71,7 @@ app.use("/api/v1/posts", postRoutes);
 app.use("/api/v1/comments", commentRoutes);
 
 //Error handler middlewares
-app.use(globalHandler)
+app.use(globalErrHandler);
 //listen server
 const PORT = process.env.PORT || 9000;
-app.listen(PORT, console.log(`Servver is running on PORT ${PORT}`));
+app.listen(PORT, console.log(`Server is running on PORT ${PORT}`));

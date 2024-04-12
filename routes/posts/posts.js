@@ -1,7 +1,6 @@
 const express = require("express");
 const multer = require("multer");
 const storage = require("../../config/cloudinary");
-
 const {
   createPostCtrl,
   deletePostCtrl,
@@ -19,23 +18,20 @@ const upload = multer({
 });
 
 //forms
-postRoutes.get('/get-post-form',(req,res)=>{
-  res.render('posts/addPost',{
-    error:''
-  })
-})
 
-postRoutes.get('/get-form-update/:id',async(req,res)=>{
-  try{
-const post=await Post.findById(req.params.id)
-res.render('posts/updatePost',{
-  post,
-  error:""
-})
-  }catch(error){
-res.render('posts/updatePost',{error,post:""})
+postRoutes.get("/get-post-form", (req, res) => {
+  res.render("posts/addPost", { error: "" });
+});
+
+postRoutes.get("/get-form-update/:id", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    res.render("posts/updatePost", { post, error: "" });
+  } catch (error) {
+    res.render("posts/updatePost", { error, post: "" });
   }
-})
+});
+
 //POST/api/v1/posts
 postRoutes.post("/", protected, upload.single("file"), createPostCtrl);
 

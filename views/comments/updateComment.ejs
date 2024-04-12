@@ -5,23 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Fontawesome -->
-    <script
-      src="https://kit.fontawesome.com/42a182743f.js"
-      crossorigin="anonymous"
-    ></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/uploadPhoto.css" />
+    <link rel="stylesheet" href="/css/form.css" />
     <link rel="stylesheet" href="/css/style.css"/>
-    <title>Upload Profile Photo</title>
+    <title>Comment Update</title>
   </head>
   <body>
-    <!-- navbar -->
+    <!-- nav -->
     <%-include('../partials/navbar.ejs') %>
+
     <div class="form-container">
       <!-- icon -->
-      <h1>Upload Profile photo</h1>
+      <h1>Update Comment</h1>
       <p>
-        <!-- upload icon -->
+        <!-- lock icon -->
+        <i class="fas fa-lock"></i>
       </p>
       <%if(error){%>
       <small class="error">
@@ -30,15 +30,13 @@
       </small>
       <%}%>
       <form
-        action="/api/v1/users/profile-photo-upload?_method=PUT"
-        method="post"
-        enctype="multipart/form-data"
+        action="/api/v1/comments/<%=comment?._id%>?_method=PUT&postId=<%=comment.post%>"
+        method="POST"
       >
-        <label for="email">Select Imgae</label>
-        <input type="file" name="profile" />
-        <button type="submit">
-          <i class="fas fa-upload"></i>
-        </button>
+        <label for="password">message</label>
+        <input value="<%=comment?.message%> " type="text" name="message" />
+
+        <button type="submit">Update Comment</button>
       </form>
     </div>
     <!-- footer -->

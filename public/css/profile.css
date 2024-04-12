@@ -61,7 +61,7 @@ body {
   flex-direction: column;
   cursor: pointer;
   color: #00fb4f;
-  font-size: 30 px;
+  font-size: 25px;
   margin-right: 10px;
 }
 
@@ -83,7 +83,7 @@ body {
   align-items: flex-start;
   flex-direction: row;
   margin-top: 20px;
-  font-size:18px;
+  font-size: 18px;
 }
 
 .details-wrapper {

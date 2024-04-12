@@ -21,13 +21,14 @@ const userSchema = new mongoose.Schema(
     coverImage: {
       type: String,
     },
-    role:{
-      type:String,
-      default:"Blogger"
+    role: {
+      type: String,
+      default: "Blogger",
     },
-    bio:{
-      type:String,
-      default:"something about author"
+    bio: {
+      type: String,
+      default:
+        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum adipisci eligendi nobis itaque ex? Veniam tempore itaque cumque fu",
     },
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],

@@ -31,7 +31,7 @@ const registerCtrl = async (req, res, next) => {
       password: passswordHashed,
     });
     //redirect
-    res.redirect("/api/v1/users/profile-page");
+    res.redirect("/api/v1/users/login");
   } catch (error) {
     res.json(error);
   }
@@ -41,7 +41,6 @@ const registerCtrl = async (req, res, next) => {
 const loginCtrl = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
-  
     return res.render("users/login", {
       error: "Email and password fields are required",
     });
@@ -81,12 +80,11 @@ const userDetailsCtrl = async (req, res) => {
     const user = await User.findById(userId);
     res.render("users/updateUser", {
       user,
-      error: ""
+      error: "",
     });
   } catch (error) {
     res.render("users/updateUser", {
-    
-      error: error.message
+      error: error.message,
     });
   }
 };
