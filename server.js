@@ -7,11 +7,13 @@ const postRoutes = require("./routes/posts/posts");
 const methodOverride=require("method-override")
 const userRoutes = require("./routes/users/users");
 const globalHandler = require("./middlewares/globalHandler");
-
+const Post = require("./model/post/Post");
+const {truncatePost}=require("./utils/helpers")
 require("./config/dbConnect");
 
 const app = express();
 
+app.locals.truncatePost=truncatePost
 //middlewares
 //-------
 app.use(express.json())
@@ -43,8 +45,15 @@ if(req.session.userAuth){
 next()
 })
 //render home page
-app.get('/',(req,res)=>{
-    res.render('index.ejs')
+app.get('/',async(req,res)=>{
+
+    try{
+        const posts=await Post.find().populate('user')
+        res.render('index',{posts})
+    }catch(error){
+res.render('index',{error:error.message})
+    }
+   
 })
 //users route
 app.use("/api/v1/users", userRoutes);

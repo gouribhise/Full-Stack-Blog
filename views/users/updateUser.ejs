@@ -11,40 +11,41 @@
     ></script>
     <!-- CSS -->
     <link rel="stylesheet" href="/public/css/form.css" />
-    <link rel="stylesheet" href="/public//css/style.css"/>
-    <title>Update User</title>
+    <link rel="stylesheet" href="/public/css/style.css"/>
+    <title>Update user</title>
   </head>
   <body>
-    <%-include('../partials/navbar.ejs')%>
-
+    <!-- navbar -->
+    <%-include('../partials/navbar.ejs') %>
     <div class="form-container">
       <!-- icon -->
       <h1>
-  Update User Form
+        Update User Form
         <i class="fas fa-user-plus"></i>
       </h1>
 
+      <%if(error){%>
       <small class="error">
         <i class="fas fa-exclamation-circle"></i>
-        Invalid Credentials
+        <%=error%>
       </small>
-      <form action="/login" method="POST">
+      <%}%>
+      <form action="/api/v1/users/update?_method=put" method="POST">
         <!-- full name -->
         <label for="name">Full Name</label>
-        <input type="text" name="name" id="name" />
+        <input
+          type="text"
+          value="<%=user?.fullname%> "
+          name="fullname"
+          id="name"
+        />
         <!-- email -->
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" />
-
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" />
-
-        <button type="submit">Register</button>
-
-        <p>Already have an account? <a href="/register">Login</a></p>
+        <input type="email" value="<%=user?.email%>" name="email" id="email" />
+        <button type="submit">Update User</button>
       </form>
     </div>
-    <%-include('../partials/footer.ejs')%>
-
+    <!-- footer -->
+    <%-include('../partials/footer.ejs') %>
   </body>
 </html>

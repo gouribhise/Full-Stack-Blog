@@ -33,28 +33,19 @@ userRoutes.get("/register", (req, res) => {
   });
 });
 
-// //profile template
-// userRoutes.get("/profile-page", (req, res) => {
-//   res.render("users/profile");
-// });
-
 //upload profile photo
 userRoutes.get("/upload-profile-photo-form", (req, res) => {
-  res.render("users/uploadProfilePhoto",{
-    error:""
-  });
+  res.render("users/uploadProfilePhoto", { error: "" });
 });
 
 //upload cover photo
 userRoutes.get("/upload-cover-photo-form", (req, res) => {
-  res.render("users/uploadCoverPhoto",{
-    error:""
-  });
+  res.render("users/uploadCoverPhoto", { error: "" });
 });
 
 //update user form
-userRoutes.get("/update-user-form", (req, res) => {
-  res.render("users/updateUser");
+userRoutes.get("/update-user-password", (req, res) => {
+  res.render("users/updatePassword", { error: "" });
 });
 
 //POST/api/v1/users/register
@@ -83,15 +74,15 @@ userRoutes.put(
 );
 
 //PUT/api/v1/users/update-password/:id
-userRoutes.put("/update-password/:id", updatePasswordCtrl);
+userRoutes.put("/update-password/", updatePasswordCtrl);
 
 //PUT/api/v1/users/update/:id
-userRoutes.put("/update/:id", updateUserCtrl);
+userRoutes.put("/update", updateUserCtrl);
 
 //GET/api/v1/users/logout
 userRoutes.get("/logout", logoutCtrl);
-module.exports = userRoutes;
 
 //GET/api/v1/users/:id
 userRoutes.get("/:id", userDetailsCtrl);
 
+module.exports = userRoutes;
