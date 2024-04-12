@@ -73,16 +73,20 @@ const deletePostCtrl = async (req, res, next) => {
     const post = await Post.findById(req.params.id);
     //check if the post belongs to the user
     if (post.user.toString() !== req.session.userAuth.toString()) {
-      return next(appErr("You are not allowed to delete this post", 403));
+      return  res.render('posts/postDetails',{
+        error:"YOu are not authorized to delete this post",
+        post
+      })
     }
     //delete post
     await Post.findByIdAndDelete(req.params.id);
-    res.json({
-      status: "success",
-      data: "Post has been deleted successfully",
-    });
+   //redirect
+   res.redirect('/')
   } catch (error) {
-    next(appErr(error.message));
+    return  res.render('posts/postDetails',{
+      error: error.message,
+      post:''
+    })
   }
 };
 
@@ -94,28 +98,50 @@ const updatepostCtrl = async (req, res, next) => {
     const post = await Post.findById(req.params.id);
     //check if the post belongs to the user
     if (post.user.toString() !== req.session.userAuth.toString()) {
-      return next(appErr("You are not allowed to update this post", 403));
+ return res.render('posts/updatePost',{
+  post:'',
+  error:'you are not authorized to update this post'
+ })
+    }
+
+    if(req.file){
+ await Post.findByIdAndUpdate(
+        req.params.id,
+        {
+          title,
+          description,
+          category,
+          image: req.file.path,
+        },
+        {
+          new: true,
+        }
+      );
+  
+    }else{
+ await Post.findByIdAndUpdate(
+        req.params.id,
+        {
+          title,
+          description,
+          category,
+          
+        },
+        {
+          new: true,
+        }
+      );
+  
     }
     //update
-    const postUpdated = await Post.findByIdAndUpdate(
-      req.params.id,
-      {
-        title,
-        description,
-        category,
-        image: req.file.path,
-      },
-      {
-        new: true,
-      }
-    );
-
-    res.json({
-      status: "success",
-      data: postUpdated,
-    });
+   
+    //redirect
+    res.redirect('/')
   } catch (error) {
-    res.json(error);
+    return res.render('posts/updatePost',{
+      post:'',
+      error:error.message,
+     })
   }
 };
 module.exports = {

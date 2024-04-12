@@ -112,13 +112,19 @@ main {
 .post-content {
   padding: 10px;
 }
-.post-info {
+.post-details-action {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   color: gray;
 }
-
+.post-details-action button{
+  color:#fff;
+  border:none;
+  cursor: pointer;
+  margin-left: 10px;
+  background-color: #ff5a5f;
+}
 .post-author {
   margin: 10px;
 }
@@ -153,7 +159,7 @@ aside {
   justify-content: center;
   align-items: center;
   padding: 10px;
-  width: 400px;
+ 
 }
 
 .comment-form form input {
